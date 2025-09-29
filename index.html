@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eBooks - Découvrez notre bibliothèque</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles */
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center p-4">
+        <!-- Loading State -->
+        <div id="loading" class="text-white text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+            <p>Chargement...</p>
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-content" class="max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden" style="display: none;">
+            <!-- Book Header (will be populated by JS) -->
+            <div id="book-header" class="bg-gradient-to-r from-violet-500 to-purple-600 p-6 text-white text-center" style="display: none;">
+                <img id="book-cover" class="w-24 h-32 mx-auto mb-4 rounded-lg shadow-lg object-cover" alt="Couverture du livre">
+                <h2 id="book-title" class="text-xl font-bold mb-2"></h2>
+                <p id="book-author" class="text-violet-100"></p>
+                <p id="book-description" class="text-sm text-violet-100 mt-2 line-clamp-3"></p>
+            </div>
+
+            <!-- Main Content -->
+            <div class="p-6 text-center">
+                <div class="mb-6">
+                    <div class="w-16 h-16 bg-violet-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <!-- Book Icon -->
+                        <svg class="h-8 w-8 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+
+                    <h1 id="main-title" class="text-2xl font-bold text-gray-800 mb-2">
+                        Découvrez notre bibliothèque
+                    </h1>
+
+                    <p id="main-description" class="text-gray-600">
+                        Plus de 100 livres de développement personnel à votre portée
+                    </p>
+                </div>
+
+                <!-- Statistics -->
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="text-center">
+                        <div class="flex items-center justify-center mb-1">
+                            <!-- Users Icon -->
+                            <svg class="h-5 w-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m3 5.197H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-lg font-bold text-gray-800">10K+</div>
+                        <div class="text-xs text-gray-500">Utilisateurs</div>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="flex items-center justify-center mb-1">
+                            <!-- Book Icon -->
+                            <svg class="h-5 w-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        <div class="text-lg font-bold text-gray-800">100+</div>
+                        <div class="text-xs text-gray-500">Livres</div>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="flex items-center justify-center mb-1">
+                            <!-- Star Icon -->
+                            <svg class="h-5 w-5 text-violet-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-lg font-bold text-gray-800">4.8</div>
+                        <div class="text-xs text-gray-500">Note</div>
+                    </div>
+                </div>
+
+                <!-- Download Button -->
+                <button onclick="handleDownloadClick()" class="w-full bg-gradient-to-r from-violet-600 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-violet-700 hover:to-purple-700 transition duration-300 flex items-center justify-center space-x-2 shadow-lg">
+                    <!-- Download Icon -->
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span>Télécharger l'Application</span>
+                </button>
+
+                <!-- Source Information -->
+                <div id="source-info" class="mt-4 text-xs text-gray-400 text-center" style="display: none;">
+                    <span id="source-text"></span>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-gray-50 px-6 py-4 text-center">
+                <p class="text-xs text-gray-500">
+                    Disponible sur iOS et Android • 100% Gratuit
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase configuration
+        const SUPABASE_URL = 'https://clptftnsvknadrfgxpuw.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNscHRmdG5zdmtuYWRyZmd4cHV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIyNDg5ODYsImV4cCI6MjA1NzgyNDk4Nn0.GnDSQHTv2fUg3aWytpuk9zDdZDc30KZaTbmqbZh4W44';
+
+        // Parse URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const utm_source = urlParams.get('utm_source');
+        const utm_medium = urlParams.get('utm_medium');
+        const utm_campaign = urlParams.get('utm_campaign');
+        const utm_content = urlParams.get('utm_content');
+        const ebook_id = urlParams.get('ebook_id');
+        const campaign_id = urlParams.get('campaign_id');
+        const should_deep_link = urlParams.get('deep_link');
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            await trackClick();
+            await loadEbookData();
+
+            // Stocker les données d'attribution pour l'app mobile
+            storeAttributionData();
+
+            if (should_deep_link === 'true') {
+                attemptDeepLink();
+            }
+
+            showMainContent();
+        });
+
+        function storeAttributionData() {
+            // Stocker les données de campagne dans localStorage
+            // L'app mobile pourra les récupérer au premier lancement
+            if (campaign_id) {
+                const attributionData = {
+                    campaign_id: campaign_id,
+                    utm_source: utm_source,
+                    utm_medium: utm_medium,
+                    utm_campaign: utm_campaign,
+                    utm_content: utm_content,
+                    ebook_id: ebook_id,
+                    click_timestamp: new Date().toISOString(),
+                    referrer_url: document.referrer
+                };
+
+                localStorage.setItem('campaign_attribution', JSON.stringify(attributionData));
+                console.log('📊 Attribution data stored:', attributionData);
+            }
+        }
+
+        async function trackClick() {
+            try {
+                console.log('🔍 Tracking attempt - campaign_id:', campaign_id);
+                console.log('🔍 User Agent:', navigator.userAgent);
+                console.log('🔍 Device type detected:', getDeviceType());
+
+                if (campaign_id && SUPABASE_URL !== 'VOTRE_SUPABASE_URL') {
+                    console.log('✅ Proceeding with tracking...');
+
+                    // Track click in Supabase
+                    const response = await fetch(`${SUPABASE_URL}/rest/v1/campaign_clicks`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        },
+                        body: JSON.stringify({
+                            campaign_link_id: campaign_id,
+                            user_agent: navigator.userAgent,
+                            referer_url: document.referrer || '',
+                            device_type: getDeviceType(),
+                            browser: getBrowserName(),
+                            os: getOSName()
+                        })
+                    });
+
+                    if (response.ok) {
+                        console.log('✅ Click tracked successfully');
+                        // Increment campaign link counter
+                        await incrementCampaignCounter();
+                    } else {
+                        console.error('❌ Failed to track click:', response.status, await response.text());
+                    }
+                } else {
+                    console.log('❌ Tracking skipped - Missing campaign_id or invalid URL');
+                    console.log('   campaign_id:', campaign_id);
+                    console.log('   SUPABASE_URL:', SUPABASE_URL);
+                }
+            } catch (error) {
+                console.error('❌ Error tracking click:', error);
+            }
+        }
+
+        async function incrementCampaignCounter() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/increment_campaign_clicks`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    },
+                    body: JSON.stringify({
+                        campaign_link_id: campaign_id
+                    })
+                });
+
+                if (response.ok) {
+                    console.log('✅ Campaign counter incremented');
+                } else {
+                    console.error('❌ Failed to increment counter:', response.status);
+                }
+            } catch (error) {
+                console.error('❌ Error incrementing counter:', error);
+            }
+        }
+
+        async function loadEbookData() {
+            try {
+                if (ebook_id && SUPABASE_URL !== 'VOTRE_SUPABASE_URL') {
+                    const response = await fetch(`${SUPABASE_URL}/rest/v1/ebooks?id=eq.${ebook_id}&select=id,title,author,description,cover_url`, {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    });
+
+                    const data = await response.json();
+                    if (data && data.length > 0) {
+                        const ebook = data[0];
+                        displayEbook(ebook);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading ebook data:', error);
+            }
+        }
+
+        function displayEbook(ebook) {
+            const bookHeader = document.getElementById('book-header');
+            const mainTitle = document.getElementById('main-title');
+            const mainDescription = document.getElementById('main-description');
+
+            document.getElementById('book-cover').src = ebook.cover_url || '';
+            document.getElementById('book-title').textContent = ebook.title;
+            document.getElementById('book-author').textContent = `par ${ebook.author}`;
+            document.getElementById('book-description').textContent = ebook.description || '';
+
+            mainTitle.textContent = 'Téléchargez gratuitement ce livre';
+            mainDescription.textContent = 'Accédez à ce livre et à toute notre collection de développement personnel';
+
+            bookHeader.style.display = 'block';
+        }
+
+        function attemptDeepLink() {
+            const deviceType = getDeviceType();
+            console.log('🔗 Attempting deep link - Device:', deviceType);
+
+            // Seulement essayer le deep link sur mobile/tablet
+            if (deviceType === 'mobile' || deviceType === 'tablet') {
+                const deepLinkParams = new URLSearchParams();
+                if (utm_source) deepLinkParams.append('utm_source', utm_source);
+                if (utm_medium) deepLinkParams.append('utm_medium', utm_medium);
+                if (utm_campaign) deepLinkParams.append('utm_campaign', utm_campaign);
+                if (utm_content) deepLinkParams.append('utm_content', utm_content);
+                if (ebook_id) deepLinkParams.append('ebook_id', ebook_id);
+                if (campaign_id) deepLinkParams.append('campaign_id', campaign_id);
+
+                const deepLinkUrl = `ebooks://?${deepLinkParams.toString()}`;
+                console.log('🔗 Deep link URL:', deepLinkUrl);
+
+                setTimeout(() => {
+                    try {
+                        window.location.href = deepLinkUrl;
+                    } catch (error) {
+                        console.log('🔗 Deep link failed (app not installed):', error);
+                    }
+                }, 100);
+            } else {
+                console.log('🔗 Deep link skipped (desktop device)');
+            }
+        }
+
+        function handleDownloadClick() {
+            const isAndroid = /Android/.test(navigator.userAgent);
+            const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+
+            if (isAndroid) {
+                window.open('https://play.google.com/store/apps/details?id=com.poyah.ebooksapp', '_blank');
+            } else if (isIOS) {
+                window.open('https://apps.apple.com/app/your-app-id', '_blank');
+            } else {
+                alert('Téléchargez notre app sur iOS App Store ou Google Play Store');
+            }
+        }
+
+        function showMainContent() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+
+            // Show source info if available
+            if (utm_source) {
+                const sourceInfo = document.getElementById('source-info');
+                const sourceText = document.getElementById('source-text');
+                sourceText.textContent = `Venu depuis ${utm_source}${utm_campaign ? ` • ${utm_campaign}` : ''}`;
+                sourceInfo.style.display = 'block';
+            }
+        }
+
+        function getDeviceType() {
+            const userAgent = navigator.userAgent.toLowerCase();
+
+            // Détection mobile améliorée
+            const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet|kindle|silk|phone/i;
+
+            // Tests spécifiques pour iOS
+            const isIOS = /ipad|iphone|ipod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+            // Tests spécifiques pour Android
+            const isAndroid = /android/.test(userAgent);
+
+            // Tests pour tablettes
+            const isTablet = /ipad|tablet|kindle|silk/.test(userAgent) || (isAndroid && !/mobile/.test(userAgent));
+
+            if (isIOS || isAndroid || mobileRegex.test(userAgent)) {
+                return isTablet ? 'tablet' : 'mobile';
+            }
+
+            return 'desktop';
+        }
+
+        function getBrowserName() {
+            const userAgent = navigator.userAgent;
+            if (userAgent.includes('Chrome') && !userAgent.includes('Edge')) return 'Chrome';
+            if (userAgent.includes('Firefox')) return 'Firefox';
+            if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) return 'Safari';
+            if (userAgent.includes('Edge')) return 'Edge';
+            if (userAgent.includes('Opera')) return 'Opera';
+            return 'Other';
+        }
+
+        function getOSName() {
+            const userAgent = navigator.userAgent;
+            const platform = navigator.platform;
+
+            // iOS détection améliorée
+            if (/iPad|iPhone|iPod/.test(userAgent) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+                return 'iOS';
+            }
+
+            if (userAgent.includes('Android')) return 'Android';
+            if (userAgent.includes('Windows')) return 'Windows';
+            if (userAgent.includes('Mac') && !userAgent.includes('iPhone')) return 'macOS';
+            if (userAgent.includes('Linux')) return 'Linux';
+
+            return 'Other';
+        }
+    </script>
+</body>
+</html>
