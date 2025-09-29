@@ -60,11 +60,11 @@
         const utm_campaign = urlParams.get('utm_campaign');
         const utm_content = urlParams.get('utm_content');
         const ebook_id = urlParams.get('ebook_id');
-        const campaign_id = urlParams.get('campaign_id');
+        const post_id = urlParams.get('post_id');  // Changé de campaign_id à post_id
         const should_deep_link = urlParams.get('deep_link');
 
         console.log('🚀 Landing page loaded');
-        console.log('📊 Campaign ID:', campaign_id);
+        console.log('📊 Social Post ID:', post_id);
         console.log('📱 Device:', getDeviceType());
 
         // Initialize page immediately
@@ -85,9 +85,9 @@
         })();
 
         function storeAttributionData() {
-            if (campaign_id) {
+            if (post_id) {
                 const attributionData = {
-                    campaign_id: campaign_id,
+                    post_id: post_id,
                     utm_source: utm_source,
                     utm_medium: utm_medium,
                     utm_campaign: utm_campaign,
@@ -106,8 +106,8 @@
             try {
                 console.log('🔍 Tracking click...');
 
-                if (!campaign_id) {
-                    console.log('⚠️ No campaign_id, skipping tracking');
+                if (!post_id) {
+                    console.log('⚠️ No post_id, skipping tracking');
                     return;
                 }
 
@@ -118,33 +118,9 @@
                                  document.referrer.includes('ebooks://') ? 'app_open' : 'playstore_open';
 
                 console.log('📍 Click type:', clickType);
+                console.log('📍 Social post ID:', post_id);
 
-                // Récupérer le post_id depuis campaign_social_posts
-                const postResponse = await fetch(
-                    `${SUPABASE_URL}/rest/v1/campaign_social_posts?campaign_id=eq.${campaign_id}&select=id`,
-                    {
-                        headers: {
-                            'apikey': SUPABASE_ANON_KEY,
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                        }
-                    }
-                );
-
-                if (!postResponse.ok) {
-                    console.error('❌ Failed to fetch social post:', postResponse.status);
-                    return;
-                }
-
-                const posts = await postResponse.json();
-                if (!posts || posts.length === 0) {
-                    console.error('❌ No social post found for campaign:', campaign_id);
-                    return;
-                }
-
-                const socialPostId = posts[0].id;
-                console.log('✅ Found social post ID:', socialPostId);
-
-                // Track click
+                // Track click directement avec le post_id
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/campaign_clicks`, {
                     method: 'POST',
                     headers: {
@@ -154,7 +130,7 @@
                         'Prefer': 'return=minimal'
                     },
                     body: JSON.stringify({
-                        campaign_social_post_id: socialPostId,
+                        campaign_social_post_id: post_id,
                         click_type: clickType,
                         user_agent: navigator.userAgent,
                         referer_url: document.referrer || '',
@@ -187,7 +163,7 @@
                 if (utm_campaign) deepLinkParams.append('utm_campaign', utm_campaign);
                 if (utm_content) deepLinkParams.append('utm_content', utm_content);
                 if (ebook_id) deepLinkParams.append('ebook_id', ebook_id);
-                if (campaign_id) deepLinkParams.append('campaign_id', campaign_id);
+                if (post_id) deepLinkParams.append('post_id', post_id);
 
                 const deepLinkUrl = `ebooks://?${deepLinkParams.toString()}`;
                 console.log('🔗 Deep link URL:', deepLinkUrl);
