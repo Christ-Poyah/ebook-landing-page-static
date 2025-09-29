@@ -112,26 +112,19 @@
                 }
 
                 const deviceType = getDeviceType();
-
-                // Détecter si c'est une réouverture d'app ou une redirection vers le store
-                const clickType = (deviceType === 'mobile' || deviceType === 'tablet') &&
-                                 document.referrer.includes('ebooks://') ? 'app_open' : 'playstore_open';
-
-                console.log('📍 Click type:', clickType);
                 console.log('📍 Social post ID:', post_id);
+                console.log('📍 Device type:', deviceType);
 
-                // Track click directement avec le post_id
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/campaign_clicks`, {
+                // Utiliser l'Edge Function pour tracker le clic
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/track-click`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'Prefer': 'return=minimal'
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
                     },
                     body: JSON.stringify({
-                        campaign_social_post_id: post_id,
-                        click_type: clickType,
+                        post_id: post_id,
                         user_agent: navigator.userAgent,
                         referer_url: document.referrer || '',
                         device_type: deviceType,
@@ -141,7 +134,8 @@
                 });
 
                 if (response.ok) {
-                    console.log('✅ Click tracked successfully as:', clickType);
+                    const result = await response.json();
+                    console.log('✅ Click tracked successfully:', result);
                 } else {
                     const errorText = await response.text();
                     console.error('❌ Failed to track click:', response.status, errorText);
